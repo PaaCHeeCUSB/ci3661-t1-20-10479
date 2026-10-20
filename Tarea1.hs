@@ -5,7 +5,7 @@
 --  Carnet:
 --
 --  Declaración de uso de herramientas de IA (obligatoria, ver enunciado):
---
+--  Uso de Gemini Pro para aprender los basics de Haskell y entender errores de sintaxis.
 -- =====================================================================
 --  No cambies el nombre del módulo ni la lista de exportación, ni las
 --  firmas de las funciones. Puedes agregar todas las funciones auxiliares
@@ -33,15 +33,41 @@ import Data.Char (isAlphaNum, isDigit, toLower, digitToInt)
 -- =====================================================================
 
 -- A1
+limpiarTexto :: String -> String
+limpiarTexto [] = []
+limpiarTexto (x:xs) = 
+  if isAlphaNum x then [toLower x] ++ limpiarTexto xs
+  else limpiarTexto xs
+
+invertirTexto :: String -> String
+invertirTexto [] = []
+invertirTexto (x:xs) = (invertirTexto xs) ++ [x]
+
 esPalindromo :: String -> Bool
-esPalindromo = undefined
+esPalindromo [] = True
+esPalindromo a = b == invertirTexto b
+  where b = limpiarTexto a
+    
+-- (x:xs) = 
+--    if isAlphaNum x then c = [toLower x]
+--  else "Pa"
 
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
 -- lista una sola vez:
---
+-- Uso una función auxiliar con parámetros acumulativos para arrastrar los valores. Así recorro la 
+-- lista una sola vez: en cada paso, si el elemento actual es mayor al máximo o menor al mínimo, 
+-- los paso actualizados a la siguiente llamada. Al vaciarse la lista, la tupla ya tiene el resultado final.
+aux :: Ord a => [a] -> a -> a -> (a, a)
+aux [] max min = (max, min)
+aux (x:xs) max min =
+  if x > max then (aux xs x min)
+  else if x < min then (aux xs max x)
+  else (aux xs max min)
+
 mayorYMenor :: Ord a => [a] -> Maybe (a, a)
-mayorYMenor = undefined
+mayorYMenor [] = Nothing
+mayorYMenor (x:xs) = Just (aux xs x x)
 
 -- A3
 leerHora :: String -> Either String (Int, Int)
