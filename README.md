@@ -1,8 +1,8 @@
 # Tarea 1: Práctica de Haskell
 
-**Nombre:** Ángel Pacheco Camargo
+**Nombre:** Ángel Pacheco C.  
 **Carnet:** 20-10479
 
-Laboratorio de Lenguajes de Programación I (CI-3661)
-Universidad Simón Bolívar
-Septiembre - Diciembre 2026
+Universidad Simón Bolívar  
+Laboratorio de Lenguajes de Programación I (CI-3661)   
+Septiembre - Diciembre 2026 
