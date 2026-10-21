@@ -1,8 +1,8 @@
 -- =====================================================================
 --  CI-3661 — Tarea 1 (Haskell) — Septiembre–Diciembre 2026
 --
---  Nombre:
---  Carnet:
+--  Nombre: Ángel Pachco C.
+--  Carnet: 20-10479
 --
 --  Declaración de uso de herramientas de IA (obligatoria, ver enunciado):
 --  Uso de Gemini Pro para aprender los basics de Haskell y entender errores de sintaxis.
@@ -12,20 +12,19 @@
 --  que quieras. El único import permitido es Data.Char.
 -- =====================================================================
 module Tarea1
-  ( esPalindromo,
-    mayorYMenor,
-    leerHora,
-    duracion,
-    promedioSobreUmbral,
-    movimientosCaballo,
-    enDosSaltos,
-    miMap,
-    miFilter,
-    miFoldl,
-  )
-where
+  ( esPalindromo
+  , mayorYMenor
+  , leerHora
+  , duracion
+  , promedioSobreUmbral
+  , movimientosCaballo
+  , enDosSaltos
+  , miMap
+  , miFilter
+  , miFoldl
+  ) where
 
-import Data.Char (digitToInt, isAlphaNum, isDigit, toLower)
+import Data.Char (isAlphaNum, isDigit, toLower, digitToInt)
 
 -- =====================================================================
 -- Parte A: recursión explícita.
