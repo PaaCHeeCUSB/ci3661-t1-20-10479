@@ -34,18 +34,18 @@ import Data.Char (isAlphaNum, isDigit, toLower, digitToInt)
 
 -- A1
 limpiarTexto :: String -> String
-limpiarTexto [] = []
-limpiarTexto (x:xs) = 
-  if isAlphaNum x then [toLower x] ++ limpiarTexto xs
-  else limpiarTexto xs
+limpiarTexto []     = []
+limpiarTexto (x:xs)
+  | isAlphaNum x = [toLower x] ++ limpiarTexto xs
+  | otherwise = limpiarTexto xs
 
 invertirTexto :: String -> String
-invertirTexto [] = []
+invertirTexto []     = []
 invertirTexto (x:xs) = (invertirTexto xs) ++ [x]
 
 esPalindromo :: String -> Bool
 esPalindromo [] = True
-esPalindromo a = b == invertirTexto b
+esPalindromo a  = b == invertirTexto b
   where b = limpiarTexto a
     
 -- (x:xs) = 
@@ -58,23 +58,38 @@ esPalindromo a = b == invertirTexto b
 -- Uso una función auxiliar con parámetros acumulativos para arrastrar los valores. Así recorro la 
 -- lista una sola vez: en cada paso, si el elemento actual es mayor al máximo o menor al mínimo, 
 -- los paso actualizados a la siguiente llamada. Al vaciarse la lista, la tupla ya tiene el resultado final.
+
 aux :: Ord a => [a] -> a -> a -> (a, a)
-aux [] max min = (max, min)
-aux (x:xs) max min =
-  if x > max then (aux xs x min)
-  else if x < min then (aux xs max x)
-  else (aux xs max min)
+aux [] max min     = (max, min)
+aux (x:xs) max min
+  | x > max   = aux xs x min
+  | x < min   = aux xs max x
+  | otherwise = aux xs max min
 
 mayorYMenor :: Ord a => [a] -> Maybe (a, a)
-mayorYMenor [] = Nothing
+mayorYMenor []     = Nothing
 mayorYMenor (x:xs) = Just (aux xs x x)
 
 -- A3
 leerHora :: String -> Either String (Int, Int)
-leerHora = undefined
+leerHora [h1, h2, ':', m1, m2] 
+  | not (isDigit h1 && isDigit h2 && isDigit m1 && isDigit m2) = Left "formato inválido"
+  | hora > 23 = Left "hora fuera de rango"
+  | minutos > 59 = Left "minutos fuera de rango"
+  | otherwise = Right (hora, minutos)
+  where 
+    hora = 10 * digitToInt h1 + digitToInt h2
+    minutos = 10 * digitToInt m1 + digitToInt m2
+leerHora _ = Left "formato inválido"
 
 duracion :: String -> String -> Either String Int
-duracion = undefined
+duracion h1 h2 = case (leerHora h1, leerHora h2) of
+  (Right (h1', m1'), Right (h2', m2')) -> 
+    let min1 = h1' * 60 + m1'
+        min2 = h2' * 60 + m2'
+    in Right (if min1 <= min2 then min2 - min1 else 1440 - min1 + min2)
+  (Left err, _)                        -> Left err
+  (_, Left err)                        -> Left err    
 
 -- =====================================================================
 -- Parte B: orden superior.
@@ -84,7 +99,11 @@ duracion = undefined
 
 -- B1
 promedioSobreUmbral :: Double -> [Double] -> Maybe Double
-promedioSobreUmbral = undefined
+promedioSobreUmbral x arr = 
+  if cantFinal > 0.0 then Just (sumaFinal / cantFinal)
+  else Nothing
+  where
+    (sumaFinal, cantFinal) = foldr (\a (suma, cant) -> if a > x then (suma + a, cant + 1) else (suma, cant)) (0.0, 0.0) arr
 
 -- B2
 movimientosCaballo :: (Int, Int) -> [(Int, Int)]
