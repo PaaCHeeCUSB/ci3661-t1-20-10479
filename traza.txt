@@ -1,0 +1,48 @@
+Sea mi carnet 20-10479, d = [0, 4, 7, 9] la lista con los cuatro últimos dígitos, en orden. 
+La reducción paso a paso de:
+
+(a) foldr (-) 0 d
+    = foldr (-) 0 [0, 4, 7, 9]
+    = 0 - (foldr (-) 0 [4, 7, 9])
+    = 0 - (4 - foldr (-) 0 [7, 9])
+    = 0 - (4 - (7 - foldr (-) 0 [9]))
+    = 0 - (4 - (7 - (9 - foldr (-) 0 [])))
+    = 0 - (4 - (7 - (9 - 0)))
+    = 0 - (4 - (7 - 9))
+    = 0 - (4 - (-2))
+    = 0 - (4 + 2)
+    = 0 - 6
+    = -6
+
+(b) foldl (-) 0 d
+    = foldl (-) 0 [0, 4, 7, 9]
+    = foldl (-) (0 - 0) [4, 7, 9]
+    = foldl (-) ((0 - 0) - 4) [7, 9]
+    = foldl (-) (((0 - 0) - 4) - 7) [9]
+    = foldl (-) ((((0 - 0) - 4) - 7) - 9) []
+    = (((0 - 0) - 4) - 7) - 9
+    = ((0 - 4) - 7) - 9
+    = ((-4) - 7) - 9
+    = (-11) - 9
+    = -20
+
+(c) Sea d' = [d1, d2] = [0, 4], entonces tenemos:
+    
+    miFoldl (-) 0 [d1, d2]
+    = miFoldl (-) 0 [0, 4]
+    = foldr (\y g a -> g (a - y)) id [0, 4] 0
+    = ((\y g a -> g (a - y)) 0 ((\y g a -> g (a - y)) 4 id)) 0
+    = ((\y g a -> g (a - y)) 0 (\a -> id (a - 4))) 0
+    = (\a -> (\a' -> id (a' - 4)) (a - 0)) 0
+    = (\a' -> id (a' - 4)) (0 - 0)
+    = (\a' -> id (a' - 4)) 0
+    = id (0 - 4)
+    = id (-4)
+    = -4
+
+(d) Los resultados de (a) y (b) son distintos porque la resta no es una operación asociativa.
+    foldr agrupa las operaciones de derecha a izquierda, mientras que foldl lo hace de izquierda 
+    a derecha, alterando el orden en que se aplican los signos y los paréntesis.
+
+    Luego, la condición para que foldr op z xs == foldl op z xs en cualquier lista finita xs, 
+    es que el operador op debe ser asociativo y el valor z debe ser su elemento neutro (o identidad).

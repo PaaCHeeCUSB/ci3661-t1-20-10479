@@ -1,7 +1,7 @@
 -- =====================================================================
 --  CI-3661 — Tarea 1 (Haskell) — Septiembre–Diciembre 2026
 --
---  Nombre: Ángel Pachco C.
+--  Nombre: Ángel Pacheco C.
 --  Carnet: 20-10479
 --
 --  Declaración de uso de herramientas de IA (obligatoria, ver enunciado):
@@ -24,7 +24,7 @@ module Tarea1
   , miFoldl
   ) where
 
-import Data.Char (isAlphaNum, isDigit, toLower, digitToInt)
+import Data.Char (digitToInt, isAlphaNum, isDigit, toLower)
 
 -- =====================================================================
 -- Parte A: recursión explícita.
@@ -48,10 +48,6 @@ esPalindromo [] = True
 esPalindromo a = b == invertirTexto b
   where
     b = limpiarTexto a
-
--- (x:xs) =
---    if isAlphaNum x then c = [toLower x]
---  else "Pa"
 
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
@@ -109,7 +105,8 @@ promedioSobreUmbral x arr =
 
 -- B2
 movimientosCaballo :: (Int, Int) -> [(Int, Int)]
-movimientosCaballo (fila, col) = [(fila + df, col + dc) | df <- [-2, -1, 1, 2], dc <- [-2, -1, 1, 2], fila + df > 0, fila + df < 9, col + dc > 0, col + dc < 9, abs df /= abs dc]
+movimientosCaballo (fila, col) =
+  [(fila + df, col + dc) | df <- [-2, -1, 1, 2], dc <- [-2, -1, 1, 2], fila + df > 0, fila + df < 9, col + dc > 0, col + dc < 9, abs df /= abs dc]
 
 enDosSaltos :: (Int, Int) -> Int
 enDosSaltos (fila, col) = length (foldr (\x acum -> if foldr (\y yaEsta -> (y == x) || yaEsta) False acum then acum else x : acum) [] lista)
@@ -124,4 +121,4 @@ miFilter :: (a -> Bool) -> [a] -> [a]
 miFilter f lista = foldr (\x acc -> if f x then x : acc else acc) [] lista
 
 miFoldl :: (b -> a -> b) -> b -> [a] -> b
-miFoldl f x ys = foldr (\y function a -> function (f a y)) id ys x
+miFoldl f x ys = foldr (\y g a -> g (f a y)) id ys x
